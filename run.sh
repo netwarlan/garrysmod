@@ -57,9 +57,6 @@ echo "
 [[ -z "$PH_AUTOTAUNT_DELAY" ]] && PH_AUTOTAUNT_DELAY=45
 [[ -z "$PH_ALLOW_PROP_PICKUP" ]] && PH_ALLOW_PROP_PICKUP=2
 
-## Setting Workshop collection
-echo "resource.AddWorkshop(\"$GMOD_WORKSHOP_COLLECTION\")" > ${GAME_DIR}/garrysmod/lua/autorun/server/workshop.lua
-
 ## Update on startup
 ## ==============================================
 if [[ "$GMOD_SERVER_UPDATE_ON_START" = true ]] || [[ "$GMOD_SERVER_VALIDATE_ON_START" = true ]]; then
@@ -169,6 +166,8 @@ echo "
 ║ Starting server                               ║
 ╚═══════════════════════════════════════════════╝
 "
+echo "resource.AddWorkshop(\"$GMOD_WORKSHOP_COLLECTION\")" > ${GAME_DIR}/garrysmod/lua/autorun/server/workshop.lua
+
 ${GAME_DIR}/srcds_run -game garrysmod \
 +maxplayers $GMOD_SERVER_MAXPLAYERS \
 +map $GMOD_SERVER_MAP \
