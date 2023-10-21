@@ -168,8 +168,8 @@ echo "
 "
 echo "resource.AddWorkshop(\"$GMOD_WORKSHOP_COLLECTION\")" > ${GAME_DIR}/garrysmod/lua/autorun/server/workshop.lua
 
-${GAME_DIR}/srcds_run -game garrysmod \
+${GAME_DIR}/srcds_run -game garrysmod -console \
 +maxplayers $GMOD_SERVER_MAXPLAYERS \
-+map $GMOD_SERVER_MAP \
++host_workshop_collection $GMOD_WORKSHOP_COLLECTION \
 +gamemode "prop_hunt" \
-+host_workshop_collection $GMOD_WORKSHOP_COLLECTION
++map $GMOD_SERVER_MAP
