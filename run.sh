@@ -18,8 +18,7 @@ echo "
 ║                                               ║
 ║ For more information:                         ║
 ║ github.com/netwarlan                          ║
-╚═══════════════════════════════════════════════╝
-"
+╚═══════════════════════════════════════════════╝"
 
 
 ## Set default values if none were provided
@@ -63,8 +62,7 @@ if [[ "$GMOD_SERVER_UPDATE_ON_START" = true ]] || [[ "$GMOD_SERVER_VALIDATE_ON_S
 echo "
 ╔═══════════════════════════════════════════════╗
 ║ Checking for updates                          ║
-╚═══════════════════════════════════════════════╝
-"
+╚═══════════════════════════════════════════════╝"
   if [[ "$GMOD_SERVER_VALIDATE_ON_START" = true ]]; then
     VALIDATE_FLAG='validate'
   else
@@ -93,8 +91,7 @@ fi
 echo "
 ╔═══════════════════════════════════════════════╗
 ║ Building server config                        ║
-╚═══════════════════════════════════════════════╝
-"
+╚═══════════════════════════════════════════════╝"
 cat <<EOF > $GAME_DIR/garrysmod/cfg/server.cfg
 hostname                        "$GMOD_SERVER_HOSTNAME"
 rcon_password                   "$GMOD_SERVER_RCONPW"
@@ -136,8 +133,7 @@ if [[ "$GMOD_SERVER_ENABLE_REMOTE_CFG" = true ]]; then
 echo "
 ╔═══════════════════════════════════════════════╗
 ║ Downloading remote config                     ║
-╚═══════════════════════════════════════════════╝
-"
+╚═══════════════════════════════════════════════╝"
   if [[ -z "$GMOD_SERVER_REMOTE_CFG" ]]; then
     echo "  Remote config enabled, but no URL provided..."
   else
@@ -153,8 +149,7 @@ fi
 echo "
 ╔═══════════════════════════════════════════════╗
 ║ Server set with provided values               ║
-╚═══════════════════════════════════════════════╝
-"
+╚═══════════════════════════════════════════════╝"
 printenv | grep GMOD
 
 
@@ -164,8 +159,7 @@ printenv | grep GMOD
 echo "
 ╔═══════════════════════════════════════════════╗
 ║ Starting server                               ║
-╚═══════════════════════════════════════════════╝
-"
+╚═══════════════════════════════════════════════╝"
 echo "resource.AddWorkshop(\"$GMOD_WORKSHOP_COLLECTION\")" > ${GAME_DIR}/garrysmod/lua/autorun/server/workshop.lua
 
 ${GAME_DIR}/srcds_run -game garrysmod -console \
