@@ -30,10 +30,11 @@ echo "
 [[ -z "$GMOD_SERVER_HOSTNAME" ]] && GMOD_SERVER_HOSTNAME="Garry's Mod | Prophunt"
 [[ -z "$GMOD_SERVER_PW" ]] && GMOD_SERVER_PW=""
 [[ -z "$GMOD_SERVER_RCONPW" ]] && GMOD_SERVER_RCONPW=""
-[[ -z "$GMOD_SERVER_ENABLE_REMOTE_CFG" ]] && GMOD_SERVER_ENABLE_REMOTE_CFG=false
+[[ -z "$GMOD_SERVER_REMOTE_CFG" ]] && GMOD_SERVER_REMOTE_CFG=false
 [[ -z "$GMOD_SERVER_UPDATE_ON_START" ]] && GMOD_SERVER_UPDATE_ON_START=true
 [[ -z "$GMOD_SERVER_VALIDATE_ON_START" ]] && GMOD_SERVER_VALIDATE_ON_START=false
 [[ -z "$GMOD_WORKSHOP_COLLECTION" ]] && GMOD_WORKSHOP_COLLECTION="177117131"
+[[ -z "$GMOD_SERVER_CONFIG" ]] && GMOD_SERVER_CONFIG="server.cfg"
 
 
 [[ -z "$PH_HUNTER_FIRE_PENALTY" ]] && PH_HUNTER_FIRE_PENALTY=10
@@ -92,7 +93,7 @@ echo "
 ╔═══════════════════════════════════════════════╗
 ║ Building server config                        ║
 ╚═══════════════════════════════════════════════╝"
-cat <<EOF > $GAME_DIR/garrysmod/cfg/server.cfg
+cat <<EOF > $GAME_DIR/garrysmod/cfg/$GMOD_SERVER_CONFIG
 hostname                        "$GMOD_SERVER_HOSTNAME"
 rcon_password                   "$GMOD_SERVER_RCONPW"
 sv_password                     "$GMOD_SERVER_PW"
@@ -117,7 +118,7 @@ ph_prop_camera_collisions       "$PH_PROP_CAMERA_COLLISIONS"
 ph_freezecam                    "$PH_FREEZECAM"
 ph_prop_collision               "$PH_PROP_COLLISION"
 ph_use_custom_plmodel           "$PH_USE_CUSTOM_PLMODEL"
-ph_use_custom_plmodel_for_prop  "$PH_USE_CUSTOM_PLMODEL_FOR_PROP" 
+ph_use_custom_plmodel_for_prop  "$PH_USE_CUSTOM_PLMODEL_FOR_PROP"
 ph_customtaunts_delay           "$PH_CUSTOMTAUNTS_DELAY"
 ph_enable_custom_taunts         "$PH_ENABLE_CUSTOM_TAUNTS"
 ph_autotaunt_enabled            "$PH_AUTOTAUNT_ENABLED"
@@ -127,21 +128,21 @@ EOF
 
 
 
-## Download config if needed (this will overwrite the server config built above)
+## Download config if needed
 ## ==============================================
-if [[ "$GMOD_SERVER_ENABLE_REMOTE_CFG" = true ]]; then
+if [[ ! -z "$GMOD_SERVER_REMOTE_CFG" ]]; then
 echo "
 ╔═══════════════════════════════════════════════╗
 ║ Downloading remote config                     ║
 ╚═══════════════════════════════════════════════╝"
-  if [[ -z "$GMOD_SERVER_REMOTE_CFG" ]]; then
-    echo "  Remote config enabled, but no URL provided..."
-  else
-    echo "  Downloading config..."
-    wget -q $GMOD_SERVER_REMOTE_CFG -O $GAME_DIR/garrysmod/cfg/server.cfg
-  fi
-
+  echo "  Downloading config..."
+  GMOD_SERVER_CONFIG=$(basename "$GMOD_SERVER_REMOTE_CFG")
+  curl --silent -O --output-dir $GAME_DIR/garrysmod/cfg/ $GMOD_SERVER_REMOTE_CFG
+  echo "  Setting $GMOD_SERVER_CONFIG as our server exec"
+  chmod 770 $GAME_DIR/garrysmod/cfg/$GMOD_SERVER_CONFIG
 fi
+
+
 
 
 ## Print Variables
@@ -154,6 +155,8 @@ printenv | grep GMOD
 
 
 
+
+
 ## Run
 ## ==============================================
 echo "
@@ -163,6 +166,9 @@ echo "
 echo "resource.AddWorkshop(\"$GMOD_WORKSHOP_COLLECTION\")" > ${GAME_DIR}/garrysmod/lua/autorun/server/workshop.lua
 
 ${GAME_DIR}/srcds_run -game garrysmod -console \
++hostname \"${GMOD_SERVER_HOSTNAME}\" \
++exec $GMOD_SERVER_CONFIG \
++port $GMOD_SERVER_PORT \
 +maxplayers $GMOD_SERVER_MAXPLAYERS \
 +host_workshop_collection $GMOD_WORKSHOP_COLLECTION \
 +gamemode "prop_hunt" \
