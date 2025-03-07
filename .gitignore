@@ -1,1 +1,2 @@
+## Don't include these files when pushing to GitHub
 .DS_Store

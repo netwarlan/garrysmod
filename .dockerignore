@@ -1,4 +1,6 @@
-.git
-readme.md
+## Don't include these files when building an image
 build.sh
+.git
+.github
 .gitignore
+readme.md
