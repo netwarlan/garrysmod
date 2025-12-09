@@ -26,11 +26,11 @@ echo "
 [[ -z "$GMOD_SERVER_PORT" ]] && GMOD_SERVER_PORT="27015"
 [[ -z "$GMOD_SERVER_MAXPLAYERS" ]] && GMOD_SERVER_MAXPLAYERS="12"
 [[ -z "$GMOD_SERVER_MAP" ]] && GMOD_SERVER_MAP="gm_flatgrass"
-[[ -z "$GMOD_SVLAN" ]] && GMOD_SVLAN="$GMOD_SVLAN"
+[[ -z "$GMOD_SVLAN" ]] && GMOD_SVLAN="0"
 [[ -z "$GMOD_SERVER_HOSTNAME" ]] && GMOD_SERVER_HOSTNAME="Garry's Mod | Prophunt"
 [[ -z "$GMOD_SERVER_PW" ]] && GMOD_SERVER_PW=""
 [[ -z "$GMOD_SERVER_RCONPW" ]] && GMOD_SERVER_RCONPW=""
-[[ -z "$GMOD_SERVER_REMOTE_CFG" ]] && GMOD_SERVER_REMOTE_CFG=false
+[[ -z "$GMOD_SERVER_REMOTE_CFG" ]] && GMOD_SERVER_REMOTE_CFG=""
 [[ -z "$GMOD_SERVER_UPDATE_ON_START" ]] && GMOD_SERVER_UPDATE_ON_START=true
 [[ -z "$GMOD_SERVER_VALIDATE_ON_START" ]] && GMOD_SERVER_VALIDATE_ON_START=false
 [[ -z "$GMOD_WORKSHOP_COLLECTION" ]] && GMOD_WORKSHOP_COLLECTION="177117131"
@@ -103,34 +103,34 @@ sv_allowupload                  0
 sv_lan                          $GMOD_SVLAN
 
 // PH: Enhanced - Gameplay settings
-ph_hunter_fire_penalty          "$PH_HUNTER_FIRE_PENALTY"
-ph_hunter_kill_bonus            "$PH_HUNTER_KILL_BONUS"
-ph_swap_teams_every_round       "$PH_SWAP_TEAMS_EVERY_ROUND"
-ph_game_time                    "$PH_GAME_TIME"
-ph_hunter_blindlock_time        "$PH_HUNTER_BLINDLOCK_TIME"
-ph_round_time                   "$PH_ROUND_TIME"
-ph_rounds_per_map               "$PH_ROUNDS_PER_MAP"
-ph_waitforplayers               "$PH_WAITFORPLAYERS"
-ph_min_waitforplayers           "$PH_MIN_WAITFORPLAYERS"
+ph_hunter_fire_penalty          $PH_HUNTER_FIRE_PENALTY
+ph_hunter_kill_bonus            $PH_HUNTER_KILL_BONUS
+ph_swap_teams_every_round       $PH_SWAP_TEAMS_EVERY_ROUND
+ph_game_time                    $PH_GAME_TIME
+ph_hunter_blindlock_time        $PH_HUNTER_BLINDLOCK_TIME
+ph_round_time                   $PH_ROUND_TIME
+ph_rounds_per_map               $PH_ROUNDS_PER_MAP
+ph_waitforplayers               $PH_WAITFORPLAYERS
+ph_min_waitforplayers           $PH_MIN_WAITFORPLAYERS
 
 // PH: Enhanced - Props/Player settings
-ph_prop_camera_collisions       "$PH_PROP_CAMERA_COLLISIONS"
-ph_freezecam                    "$PH_FREEZECAM"
-ph_prop_collision               "$PH_PROP_COLLISION"
-ph_use_custom_plmodel           "$PH_USE_CUSTOM_PLMODEL"
-ph_use_custom_plmodel_for_prop  "$PH_USE_CUSTOM_PLMODEL_FOR_PROP"
-ph_customtaunts_delay           "$PH_CUSTOMTAUNTS_DELAY"
-ph_enable_custom_taunts         "$PH_ENABLE_CUSTOM_TAUNTS"
-ph_autotaunt_enabled            "$PH_AUTOTAUNT_ENABLED"
-ph_autotaunt_delay              "$PH_AUTOTAUNT_DELAY"
-ph_allow_prop_pickup            "$PH_ALLOW_PROP_PICKUP"
+ph_prop_camera_collisions       $PH_PROP_CAMERA_COLLISIONS
+ph_freezecam                    $PH_FREEZECAM
+ph_prop_collision               $PH_PROP_COLLISION
+ph_use_custom_plmodel           $PH_USE_CUSTOM_PLMODEL
+ph_use_custom_plmodel_for_prop  $PH_USE_CUSTOM_PLMODEL_FOR_PROP
+ph_customtaunts_delay           $PH_CUSTOMTAUNTS_DELAY
+ph_enable_custom_taunts         $PH_ENABLE_CUSTOM_TAUNTS
+ph_autotaunt_enabled            $PH_AUTOTAUNT_ENABLED
+ph_autotaunt_delay              $PH_AUTOTAUNT_DELAY
+ph_allow_prop_pickup            $PH_ALLOW_PROP_PICKUP
 EOF
 
 
 
 ## Download config if needed
 ## ==============================================
-if [[ ! -z "$GMOD_SERVER_REMOTE_CFG" ]]; then
+if [[ -n "$GMOD_SERVER_REMOTE_CFG" ]]; then
 echo "
 ╔═══════════════════════════════════════════════╗
 ║ Downloading remote config                     ║

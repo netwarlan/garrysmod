@@ -22,7 +22,7 @@ Environment Variable | Default Value
 GMOD_SERVER_PORT | 27015
 GMOD_SERVER_MAXPLAYERS | 12
 GMOD_SERVER_MAP | gm_flatgrass
-GMOD_SERVER_HOSTNAME | Garry Prop hunt
+GMOD_SERVER_HOSTNAME | Garry's Mod \| Prophunt
 GMOD_SVLAN | 0
 GMOD_SERVER_PW | No password set
 GMOD_SERVER_RCONPW | No password set
@@ -30,6 +30,8 @@ GMOD_SERVER_UPDATE_ON_START | true
 GMOD_SERVER_VALIDATE_ON_START | false
 GMOD_SERVER_ENABLE_REMOTE_CFG | false
 GMOD_SERVER_REMOTE_CFG | No url set
+GMOD_WORKSHOP_COLLECTION | 177117131
+GMOD_SERVER_CONFIG | server.cfg
 
 Gameplay Variables | Default Value
 -------------------| -------------
