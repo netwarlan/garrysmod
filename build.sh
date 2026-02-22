@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
+set -e
 
-docker build -t netwarlan/garrysmod .
+docker build -t ghcr.io/netwarlan/garrysmod "$@" .

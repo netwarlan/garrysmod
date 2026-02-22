@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 echo "
 
@@ -23,39 +24,50 @@ echo "
 
 ## Set default values if none were provided
 ## ==============================================
-[[ -z "$GMOD_SERVER_PORT" ]] && GMOD_SERVER_PORT="27015"
-[[ -z "$GMOD_SERVER_MAXPLAYERS" ]] && GMOD_SERVER_MAXPLAYERS="12"
-[[ -z "$GMOD_SERVER_MAP" ]] && GMOD_SERVER_MAP="gm_flatgrass"
-[[ -z "$GMOD_SVLAN" ]] && GMOD_SVLAN="$GMOD_SVLAN"
-[[ -z "$GMOD_SERVER_HOSTNAME" ]] && GMOD_SERVER_HOSTNAME="Garry's Mod | Prophunt"
-[[ -z "$GMOD_SERVER_PW" ]] && GMOD_SERVER_PW=""
-[[ -z "$GMOD_SERVER_RCONPW" ]] && GMOD_SERVER_RCONPW=""
-[[ -z "$GMOD_SERVER_REMOTE_CFG" ]] && GMOD_SERVER_REMOTE_CFG=false
-[[ -z "$GMOD_SERVER_UPDATE_ON_START" ]] && GMOD_SERVER_UPDATE_ON_START=true
-[[ -z "$GMOD_SERVER_VALIDATE_ON_START" ]] && GMOD_SERVER_VALIDATE_ON_START=false
-[[ -z "$GMOD_WORKSHOP_COLLECTION" ]] && GMOD_WORKSHOP_COLLECTION="177117131"
-[[ -z "$GMOD_SERVER_CONFIG" ]] && GMOD_SERVER_CONFIG="server.cfg"
+GMOD_SERVER_PORT="${GMOD_SERVER_PORT:-27015}"
+GMOD_SERVER_MAXPLAYERS="${GMOD_SERVER_MAXPLAYERS:-12}"
+GMOD_SERVER_MAP="${GMOD_SERVER_MAP:-ph_office}"
+GMOD_SVLAN="${GMOD_SVLAN:-0}"
+GMOD_SERVER_HOSTNAME="${GMOD_SERVER_HOSTNAME:-Garrys Mod | Prophunt}"
+GMOD_SERVER_PW="${GMOD_SERVER_PW:-}"
+GMOD_SERVER_RCONPW="${GMOD_SERVER_RCONPW:-}"
+GMOD_SERVER_REMOTE_CFG="${GMOD_SERVER_REMOTE_CFG:-}"
+GMOD_SERVER_UPDATE_ON_START="${GMOD_SERVER_UPDATE_ON_START:-true}"
+GMOD_SERVER_VALIDATE_ON_START="${GMOD_SERVER_VALIDATE_ON_START:-false}"
+GMOD_WORKSHOP_COLLECTION="${GMOD_WORKSHOP_COLLECTION:-177117131}"
+GMOD_SERVER_CONFIG="${GMOD_SERVER_CONFIG:-server.cfg}"
+GMOD_GAMEMODE="${GMOD_GAMEMODE:-prop_hunt}"
 
+PH_HUNTER_FIRE_PENALTY="${PH_HUNTER_FIRE_PENALTY:-10}"
+PH_HUNTER_KILL_BONUS="${PH_HUNTER_KILL_BONUS:-100}"
+PH_SWAP_TEAMS_EVERY_ROUND="${PH_SWAP_TEAMS_EVERY_ROUND:-1}"
+PH_GAME_TIME="${PH_GAME_TIME:-40}"
+PH_HUNTER_BLINDLOCK_TIME="${PH_HUNTER_BLINDLOCK_TIME:-30}"
+PH_ROUND_TIME="${PH_ROUND_TIME:-300}"
+PH_ROUNDS_PER_MAP="${PH_ROUNDS_PER_MAP:-10}"
+PH_WAITFORPLAYERS="${PH_WAITFORPLAYERS:-1}"
+PH_MIN_WAITFORPLAYERS="${PH_MIN_WAITFORPLAYERS:-2}"
+PH_PROP_CAMERA_COLLISIONS="${PH_PROP_CAMERA_COLLISIONS:-1}"
+PH_FREEZECAM="${PH_FREEZECAM:-1}"
+PH_PROP_COLLISION="${PH_PROP_COLLISION:-0}"
+PH_USE_CUSTOM_PLMODEL="${PH_USE_CUSTOM_PLMODEL:-1}"
+PH_USE_CUSTOM_PLMODEL_FOR_PROP="${PH_USE_CUSTOM_PLMODEL_FOR_PROP:-1}"
+PH_CUSTOMTAUNTS_DELAY="${PH_CUSTOMTAUNTS_DELAY:-1}"
+PH_ENABLE_CUSTOM_TAUNTS="${PH_ENABLE_CUSTOM_TAUNTS:-6}"
+PH_AUTOTAUNT_ENABLED="${PH_AUTOTAUNT_ENABLED:-0}"
+PH_AUTOTAUNT_DELAY="${PH_AUTOTAUNT_DELAY:-45}"
+PH_ALLOW_PROP_PICKUP="${PH_ALLOW_PROP_PICKUP:-2}"
 
-[[ -z "$PH_HUNTER_FIRE_PENALTY" ]] && PH_HUNTER_FIRE_PENALTY=10
-[[ -z "$PH_HUNTER_KILL_BONUS" ]] && PH_HUNTER_KILL_BONUS=100
-[[ -z "$PH_SWAP_TEAMS_EVERY_ROUND" ]] && PH_SWAP_TEAMS_EVERY_ROUND=1
-[[ -z "$PH_GAME_TIME" ]] && PH_GAME_TIME=40
-[[ -z "$PH_HUNTER_BLINDLOCK_TIME" ]] && PH_HUNTER_BLINDLOCK_TIME=30
-[[ -z "$PH_ROUND_TIME" ]] && PH_ROUND_TIME=300
-[[ -z "$PH_ROUNDS_PER_MAP" ]] && PH_ROUNDS_PER_MAP=10
-[[ -z "$PH_WAITFORPLAYERS" ]] && PH_WAITFORPLAYERS=1
-[[ -z "$PH_MIN_WAITFORPLAYERS" ]] && PH_MIN_WAITFORPLAYERS=2
-[[ -z "$PH_PROP_CAMERA_COLLISIONS" ]] && PH_PROP_CAMERA_COLLISIONS=1
-[[ -z "$PH_FREEZECAM" ]] && PH_FREEZECAM=1
-[[ -z "$PH_PROP_COLLISION" ]] && PH_PROP_COLLISION=0
-[[ -z "$PH_USE_CUSTOM_PLMODEL" ]] && PH_USE_CUSTOM_PLMODEL=1
-[[ -z "$PH_USE_CUSTOM_PLMODEL_FOR_PROP" ]] && PH_USE_CUSTOM_PLMODEL_FOR_PROP=1
-[[ -z "$PH_CUSTOMTAUNTS_DELAY" ]] && PH_CUSTOMTAUNTS_DELAY=1
-[[ -z "$PH_ENABLE_CUSTOM_TAUNTS" ]] && PH_ENABLE_CUSTOM_TAUNTS=6
-[[ -z "$PH_AUTOTAUNT_ENABLED" ]] && PH_AUTOTAUNT_ENABLED=0
-[[ -z "$PH_AUTOTAUNT_DELAY" ]] && PH_AUTOTAUNT_DELAY=45
-[[ -z "$PH_ALLOW_PROP_PICKUP" ]] && PH_ALLOW_PROP_PICKUP=2
+## Validate numeric inputs
+## ==============================================
+if [[ ! "$GMOD_SERVER_PORT" =~ ^[0-9]+$ ]]; then
+  echo "Error: GMOD_SERVER_PORT must be a valid number"
+  exit 1
+fi
+if [[ ! "$GMOD_SERVER_MAXPLAYERS" =~ ^[0-9]+$ ]]; then
+  echo "Error: GMOD_SERVER_MAXPLAYERS must be a valid number"
+  exit 1
+fi
 
 ## Update on startup
 ## ==============================================
@@ -71,17 +83,17 @@ echo "
   fi
 
   ## Install Garry's Mod
-  $STEAMCMD_DIR/steamcmd.sh \
-  +force_install_dir $GAME_DIR \
-  +login $STEAMCMD_USER $STEAMCMD_PASSWORD $STEAMCMD_AUTH_CODE \
-  +app_update $STEAMCMD_APP $VALIDATE_FLAG \
+  "$STEAMCMD_DIR/steamcmd.sh" \
+  +force_install_dir "$GAME_DIR" \
+  +login "$STEAMCMD_USER" "$STEAMCMD_PASSWORD" "$STEAMCMD_AUTH_CODE" \
+  +app_update "$STEAMCMD_APP" $VALIDATE_FLAG \
   +quit
 
   ## Install CSS
-  $STEAMCMD_DIR/steamcmd.sh \
-  +force_install_dir $GAME_DIR/content/css \
-  +login $STEAMCMD_USER $STEAMCMD_PASSWORD $STEAMCMD_AUTH_CODE \
-  +app_update $STEAMCMD_APP_2 $VALIDATE_FLAG \
+  "$STEAMCMD_DIR/steamcmd.sh" \
+  +force_install_dir "$GAME_DIR/content/css" \
+  +login "$STEAMCMD_USER" "$STEAMCMD_PASSWORD" "$STEAMCMD_AUTH_CODE" \
+  +app_update "$STEAMCMD_APP_2" $VALIDATE_FLAG \
   +quit
 fi
 
@@ -93,11 +105,10 @@ echo "
 ╔═══════════════════════════════════════════════╗
 ║ Building server config                        ║
 ╚═══════════════════════════════════════════════╝"
-cat <<EOF > $GAME_DIR/garrysmod/cfg/$GMOD_SERVER_CONFIG
+cat <<EOF > "$GAME_DIR/garrysmod/cfg/$GMOD_SERVER_CONFIG"
 hostname                        "$GMOD_SERVER_HOSTNAME"
 rcon_password                   "$GMOD_SERVER_RCONPW"
 sv_password                     "$GMOD_SERVER_PW"
-sv_downloadurl                  "$DOWNLOAD_URL"
 sv_allowdownload                0
 sv_allowupload                  0
 sv_lan                          $GMOD_SVLAN
@@ -130,16 +141,16 @@ EOF
 
 ## Download config if needed
 ## ==============================================
-if [[ ! -z "$GMOD_SERVER_REMOTE_CFG" ]]; then
+if [[ -n "$GMOD_SERVER_REMOTE_CFG" ]]; then
 echo "
 ╔═══════════════════════════════════════════════╗
 ║ Downloading remote config                     ║
 ╚═══════════════════════════════════════════════╝"
   echo "  Downloading config..."
   GMOD_SERVER_CONFIG=$(basename "$GMOD_SERVER_REMOTE_CFG")
-  curl --silent -O --output-dir $GAME_DIR/garrysmod/cfg/ $GMOD_SERVER_REMOTE_CFG
+  curl --silent -O --output-dir "$GAME_DIR/garrysmod/cfg/" "$GMOD_SERVER_REMOTE_CFG"
   echo "  Setting $GMOD_SERVER_CONFIG as our server exec"
-  chmod 770 $GAME_DIR/garrysmod/cfg/$GMOD_SERVER_CONFIG
+  chmod 770 "$GAME_DIR/garrysmod/cfg/$GMOD_SERVER_CONFIG"
 fi
 
 
@@ -163,13 +174,13 @@ echo "
 ╔═══════════════════════════════════════════════╗
 ║ Starting server                               ║
 ╚═══════════════════════════════════════════════╝"
-echo "resource.AddWorkshop(\"$GMOD_WORKSHOP_COLLECTION\")" > ${GAME_DIR}/garrysmod/lua/autorun/server/workshop.lua
+echo "resource.AddWorkshop(\"$GMOD_WORKSHOP_COLLECTION\")" > "$GAME_DIR/garrysmod/lua/autorun/server/workshop.lua"
 
-${GAME_DIR}/srcds_run -game garrysmod -console \
+"$GAME_DIR/srcds_run" -game garrysmod -console \
 +hostname \"${GMOD_SERVER_HOSTNAME}\" \
-+exec $GMOD_SERVER_CONFIG \
-+port $GMOD_SERVER_PORT \
-+maxplayers $GMOD_SERVER_MAXPLAYERS \
-+host_workshop_collection $GMOD_WORKSHOP_COLLECTION \
-+gamemode "prop_hunt" \
-+map $GMOD_SERVER_MAP
++exec "$GMOD_SERVER_CONFIG" \
++port "$GMOD_SERVER_PORT" \
++maxplayers "$GMOD_SERVER_MAXPLAYERS" \
++host_workshop_collection "$GMOD_WORKSHOP_COLLECTION" \
++gamemode "$GMOD_GAMEMODE" \
++map "$GMOD_SERVER_MAP"
