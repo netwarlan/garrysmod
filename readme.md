@@ -1,4 +1,9 @@
-# Garry's Mod | Prop hunt          
+# Garry's Mod | Prop hunt
+
+[![Build](https://img.shields.io/github/actions/workflow/status/netwarlan/garrysmod/build.yaml)](https://github.com/netwarlan/garrysmod/actions)
+[![Release](https://img.shields.io/github/v/release/netwarlan/garrysmod)](https://github.com/netwarlan/garrysmod/releases)
+[![Discord](https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white)](https://discord.gg/QtqKW9xvzK)
+
 The following repository contains the source files for building a Garry's Mod Prop hunt server.
 
 
