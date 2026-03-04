@@ -12,8 +12,6 @@ concurrency:
 jobs:
   version:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
@@ -26,14 +24,6 @@ jobs:
           release: true
           check: true
           check-latest-tag-only: true
-      - name: Push tag and create release
-        if: steps.cocogitto.outputs.version != ''
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          git push --tags
-          cog changelog --at "${{ steps.cocogitto.outputs.version }}" > /tmp/changelog.md
-          gh release create "${{ steps.cocogitto.outputs.version }}" --notes-file /tmp/changelog.md
       - name: Set version output
         id: version
         run: |
@@ -52,3 +42,21 @@ jobs:
     with:
       image-name: ${{ github.event.repository.name }}
       version: ${{ needs.version.outputs.version }}
+
+  release:
+    needs: [version, build]
+    if: needs.version.outputs.version != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Push tag and create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git tag "${{ needs.version.outputs.version }}"
+          git push origin "${{ needs.version.outputs.version }}"
+          gh release create "${{ needs.version.outputs.version }}" --generate-notes
