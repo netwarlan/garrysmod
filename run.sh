@@ -34,6 +34,8 @@ GMOD_SERVER_RCONPW="${GMOD_SERVER_RCONPW:-}"
 GMOD_SERVER_REMOTE_CFG="${GMOD_SERVER_REMOTE_CFG:-}"
 GMOD_SERVER_UPDATE_ON_START="${GMOD_SERVER_UPDATE_ON_START:-true}"
 GMOD_SERVER_VALIDATE_ON_START="${GMOD_SERVER_VALIDATE_ON_START:-false}"
+GMOD_SERVER_UPDATE_ONLY_THEN_STOP="${GMOD_SERVER_UPDATE_ONLY_THEN_STOP:-false}"
+GMOD_SERVER_VALIDATE_ONLY_THEN_STOP="${GMOD_SERVER_VALIDATE_ONLY_THEN_STOP:-false}"
 GMOD_WORKSHOP_COLLECTION="${GMOD_WORKSHOP_COLLECTION:-177117131}"
 GMOD_SERVER_CONFIG="${GMOD_SERVER_CONFIG:-server.cfg}"
 GMOD_GAMEMODE="${GMOD_GAMEMODE:-prop_hunt}"
@@ -68,6 +70,41 @@ if [[ ! "$GMOD_SERVER_MAXPLAYERS" =~ ^[0-9]+$ ]]; then
   echo "Error: GMOD_SERVER_MAXPLAYERS must be a valid number"
   exit 1
 fi
+
+## Download game files only (without starting server)
+## ==============================================
+if [[ "$GMOD_SERVER_UPDATE_ONLY_THEN_STOP" = true ]] || [[ "$GMOD_SERVER_VALIDATE_ONLY_THEN_STOP" = true ]]; then
+echo "
+╔═══════════════════════════════════════════════╗
+║ Downloading game files only                   ║
+╚═══════════════════════════════════════════════╝"
+  if [[ "$GMOD_SERVER_VALIDATE_ONLY_THEN_STOP" = true ]]; then
+    VALIDATE_FLAG='validate'
+  else
+    VALIDATE_FLAG=''
+  fi
+
+  ## Install Garry's Mod
+  "$STEAMCMD_DIR/steamcmd.sh" \
+  +force_install_dir "$GAME_DIR" \
+  +login "$STEAMCMD_USER" "$STEAMCMD_PASSWORD" "$STEAMCMD_AUTH_CODE" \
+  +app_update "$STEAMCMD_APP" $VALIDATE_FLAG \
+  +quit
+
+  ## Install CSS
+  "$STEAMCMD_DIR/steamcmd.sh" \
+  +force_install_dir "$GAME_DIR/content/css" \
+  +login "$STEAMCMD_USER" "$STEAMCMD_PASSWORD" "$STEAMCMD_AUTH_CODE" \
+  +app_update "$STEAMCMD_APP_2" $VALIDATE_FLAG \
+  +quit
+
+echo "
+╔═══════════════════════════════════════════════╗
+║ Game files downloaded. Stopping container.    ║
+╚═══════════════════════════════════════════════╝"
+  exit 0
+fi
+
 
 ## Update on startup
 ## ==============================================

@@ -13,12 +13,27 @@ To run the container, issue the following example command:
 docker run -d \
 -p 27015:27015/udp \
 -p 27015:27015/tcp \
--e GMOD_SERVER_NAME="Garry Prop hunt" \
+-e GMOD_SERVER_HOSTNAME="Garrys Mod | Prophunt" \
+ghcr.io/netwarlan/garrysmod
+```
+
+### Downloading Game Files Only
+To pre-download game files without starting the server (useful for pre-populating volumes):
+```
+docker run --rm -v gmod-data:/app/gmod \
+-e GMOD_SERVER_UPDATE_ONLY_THEN_STOP=true \
+ghcr.io/netwarlan/garrysmod
+```
+
+To download and validate game files:
+```
+docker run --rm -v gmod-data:/app/gmod \
+-e GMOD_SERVER_VALIDATE_ONLY_THEN_STOP=true \
 ghcr.io/netwarlan/garrysmod
 ```
 
 ### Environment Variables
-We can make dynamic changes to our Rust containers by adjusting some of the environment variables passed to our image.
+We can make dynamic changes to our Garry's Mod containers by adjusting some of the environment variables passed to our image.
 
 Below are the ones currently supported and their (defaults):
 
@@ -26,15 +41,19 @@ Environment Variable | Default Value
 -------------------- | -------------
 GMOD_SERVER_PORT | 27015
 GMOD_SERVER_MAXPLAYERS | 12
-GMOD_SERVER_MAP | gm_flatgrass
-GMOD_SERVER_HOSTNAME | Garry Prop hunt
+GMOD_SERVER_MAP | ph_office
+GMOD_SERVER_HOSTNAME | Garrys Mod \| Prophunt
 GMOD_SVLAN | 0
 GMOD_SERVER_PW | No password set
 GMOD_SERVER_RCONPW | No password set
 GMOD_SERVER_UPDATE_ON_START | true
 GMOD_SERVER_VALIDATE_ON_START | false
-GMOD_SERVER_ENABLE_REMOTE_CFG | false
-GMOD_SERVER_REMOTE_CFG | No url set
+GMOD_SERVER_UPDATE_ONLY_THEN_STOP | false
+GMOD_SERVER_VALIDATE_ONLY_THEN_STOP | false
+GMOD_SERVER_REMOTE_CFG | Not set
+GMOD_WORKSHOP_COLLECTION | 177117131
+GMOD_SERVER_CONFIG | server.cfg
+GMOD_GAMEMODE | prop_hunt
 
 Gameplay Variables | Default Value
 -------------------| -------------
