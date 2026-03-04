@@ -1,6 +1,7 @@
 from_latest_tag = true
 tag_prefix = "v"
 ignore_merge_commits = true
+disable_bump_commit = true
 
 [commit_types]
 docs = { changelog_title = "Documentation", bump_patch = true }
