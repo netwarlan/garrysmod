@@ -26,12 +26,20 @@ jobs:
           release: true
           check: true
           check-latest-tag-only: true
+      - name: Push tag and create release
+        if: steps.cocogitto.outputs.version != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git push --tags
+          cog changelog --at "${{ steps.cocogitto.outputs.version }}" > /tmp/changelog.md
+          gh release create "${{ steps.cocogitto.outputs.version }}" --notes-file /tmp/changelog.md
       - name: Set version output
         id: version
         run: |
           COG_VERSION="${{ steps.cocogitto.outputs.version }}"
           if [ -n "$COG_VERSION" ]; then
-            echo "version=v${COG_VERSION}" >> "$GITHUB_OUTPUT"
+            echo "version=${COG_VERSION}" >> "$GITHUB_OUTPUT"
           fi
 
   build:
